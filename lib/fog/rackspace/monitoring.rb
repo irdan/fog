@@ -68,6 +68,9 @@ module Fog
 
 
       class Mock < Fog::Rackspace::Service
+        def initialize(options ={})
+          @rackspace_username = options[:rackspace_username]
+        end
         def request(params)
           Fog::Mock.not_implemented
         end
