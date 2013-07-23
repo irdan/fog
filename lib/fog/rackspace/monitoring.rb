@@ -106,11 +106,9 @@ module Fog
 
         private
 
-        def request(params)
+        def request(params, parse_json = true)
           begin
-            response = @connection.request(params.merge!({
-              :path     => "#{endpoint_uri.path}/#{params[:path]}"
-            }))
+            super(params, parse_json)
           rescue Excon::Errors::BadRequest => error
             raise BadRequest.slurp error
           rescue Excon::Errors::Conflict => error
@@ -120,10 +118,6 @@ module Fog
           rescue Excon::Errors::ServiceUnavailable => error
             raise ServiceUnavailable.slurp error
           end
-          unless response.body.empty?
-            response.body = Fog::JSON.decode(response.body)
-          end
-          response
         end
 
         def authenticate
